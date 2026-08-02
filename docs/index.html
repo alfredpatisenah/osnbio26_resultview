@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSN Biologi 2026 · Results Overview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F2F2F2;
+    --card:#FFFFFF;
+    --card-2:#F7F7F6;
+    --ink:#3F4042;
+    --ink-soft:#565759;
+    --ink-dim:#8E8F91;
+    --green:#5AAB55;
+    --blue:#408DC4;
+    --purple:#844E94;
+    --red:#D24D3B;
+    --yellow:#E8BC05;
+    --line:#E2E2E1;
+    --radius:14px;
+    --font:'Manrope','Avenir Next',system-ui,sans-serif;
+    --gold:#d9a400; --silver:#96979c; --bronze:#8f5320; --merit:#48a04e; --none:#cbcdcc;
+    --shadow:0 1px 3px rgba(0,0,0,.05);
+    --shadow-lg:0 3px 14px rgba(0,0,0,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  button,select,input{font-family:inherit}
+  button{cursor:pointer}
+  :focus-visible{outline:3px solid var(--yellow);outline-offset:2px;border-radius:6px}
+  svg{display:block;width:100%;overflow:visible}
+
+  /* ---- header ---- */
+  header{background:var(--card);padding:24px 20px 0;border-bottom:1px solid var(--line)}
+  .head-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:22px;flex-wrap:wrap;padding-bottom:18px}
+  /* Sized by height so a wide logo and a square one carry the same visual weight —
+     swap assets/logo.png for any aspect ratio and it stays balanced. */
+  .logo{height:64px;width:auto;max-width:260px;object-fit:contain;flex:0 0 auto}
+  .head-text{flex:1 1 300px;min-width:0}
+  .eyebrow{font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--green);margin-bottom:6px}
+  h1{font-weight:800;font-size:clamp(24px,4.4vw,38px);line-height:1.08;letter-spacing:.01em;text-transform:uppercase;color:var(--ink-soft)}
+  .head-sub{margin-top:8px;font-size:13.5px;font-weight:600;color:var(--ink-dim);display:flex;flex-wrap:wrap;gap:4px 16px}
+  .head-metrics-wrap{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:9px}
+  .head-metrics-cap{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--green)}
+  .head-metrics{display:flex;gap:18px;flex:0 0 auto;flex-wrap:wrap;justify-content:flex-end}
+  .hm{text-align:right}
+  .hm .v{font-size:25px;font-weight:800;color:var(--ink-soft);line-height:1;font-variant-numeric:tabular-nums}
+  .hm .k{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim);margin-top:3px}
+  .hm.gold .v{color:#a67e00} .hm.silver .v{color:#6a6b70} .hm.bronze .v{color:#7a4a1e} .hm.merit .v{color:#3a8a40}
+  .garland{max-width:1200px;margin:0 auto;height:36px;overflow:hidden;background-image:url("assets/garland.png");background-repeat:repeat-x;background-size:auto 100%}
+
+  main{max-width:1200px;margin:0 auto;padding:22px 20px 40px}
+  .sec-t{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin:10px 0 12px;display:flex;align-items:baseline;gap:10px}
+  .sec-t .k{font-size:12px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--ink-dim)}
+
+  /* ---- podium ---- */
+  .podium{display:grid;grid-template-columns:1fr 1.12fr 1fr;gap:14px;align-items:end;margin-bottom:24px}
+  .pod{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 16px;text-align:center;position:relative;border-top:4px solid var(--none);font:inherit;color:inherit;width:100%;display:block}
+  .pod.p1{box-shadow:var(--shadow-lg);border-top-color:var(--gold)}
+  .pod.p2{border-top-color:var(--silver)} .pod.p3{border-top-color:var(--bronze)}
+  .pod .rk{position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:30px;height:30px;border-radius:50%;
+           display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#fff;box-shadow:var(--shadow)}
+  .pod.p1 .rk{background:var(--gold);color:#5c4c00} .pod.p2 .rk{background:var(--silver)} .pod.p3 .rk{background:var(--bronze)}
+  .pod .medalico{font-size:26px;margin-top:6px}
+  .pod .nm{font-weight:800;font-size:16px;margin-top:6px;color:var(--ink)}
+  .pod .ct{font-size:12.5px;color:var(--ink-dim);margin-top:3px;display:flex;align-items:center;gap:6px;justify-content:center;font-weight:600}
+  .pod .sc{font-size:32px;font-weight:800;color:var(--green);margin-top:12px;font-variant-numeric:tabular-nums;line-height:1}
+  .pod .scl{font-size:10px;color:var(--ink-dim);text-transform:uppercase;letter-spacing:.1em;font-weight:800;margin-top:4px}
+  .pod.p1{padding-top:26px}
+  .flag-code{display:inline-flex;align-items:center;justify-content:center;height:19px;padding:0 7px;border-radius:5px;
+          background:var(--ink-soft);color:#fff;font-weight:800;font-size:10.5px;letter-spacing:.4px}
+
+  /* ---- chart card ---- */
+  .charts{display:grid;grid-template-columns:minmax(0,720px);justify-content:center;gap:16px;margin-bottom:24px}
+  .cbox{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px}
+  .cbox h2{margin:0 0 2px;font-size:15px;font-weight:800;color:var(--ink)}
+  .cbox .h-sub{font-size:12.5px;color:var(--ink-dim);margin-bottom:12px;font-weight:600}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 10px;margin-top:12px}
+  .chip{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--ink-soft);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+  .chip .sw{width:11px;height:11px;border-radius:4px;flex:0 0 auto}
+
+  /* ---- controls ---- */
+  .controls{display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px;background:var(--card);border:1px solid var(--line);
+            border-radius:var(--radius);padding:14px 16px;margin-bottom:14px;box-shadow:var(--shadow)}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field label,.field .lbl{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  select,input[type=search]{padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--card-2);
+          font-size:14px;font-weight:700;color:var(--ink);outline:none}
+  input[type=search]{min-width:230px;font-weight:600}
+  select:focus,input:focus{border-color:var(--green)}
+  .medal-filter{display:flex;gap:7px;flex-wrap:wrap}
+  .mf{border:1.5px solid var(--line);border-radius:999px;padding:8px 14px;font-weight:800;font-size:12.5px;background:var(--card-2);
+      color:var(--ink-soft);display:inline-flex;align-items:center;gap:7px;transition:all .12s}
+  .mf .sw{width:9px;height:9px;border-radius:50%}
+  .mf:hover{border-color:var(--green)}
+  .mf[aria-pressed=true]{background:var(--green);border-color:var(--green);color:#fff}
+  .mf[aria-pressed=true] .sw{box-shadow:0 0 0 2px rgba(255,255,255,.6)}
+  .count-note{margin-left:auto;font-size:12.5px;color:var(--ink-dim);font-weight:700;align-self:center}
+
+  /* ---- table ---- */
+  .tablewrap{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .scroller{overflow-x:auto}
+  table{border-collapse:separate;border-spacing:0;width:100%;font-size:13.5px}
+  thead th{position:sticky;top:0;background:var(--ink-soft);color:#fff;font-size:11px;font-weight:800;letter-spacing:.05em;
+           text-transform:uppercase;padding:0;text-align:left;z-index:2;white-space:nowrap}
+  thead th button{width:100%;text-align:inherit;background:none;border:0;color:inherit;font:inherit;padding:11px 12px;letter-spacing:inherit;text-transform:inherit}
+  thead th.num,thead th.num button{text-align:right}
+  thead th button:hover{background:#4a4b4d}
+  thead th .ar{opacity:.7;font-size:9px;margin-left:2px}
+  tbody td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+  tbody td.num{text-align:right;font-variant-numeric:tabular-nums}
+  tbody tr.on:hover td,tbody tr.on:focus-visible td{background:var(--card-2);cursor:pointer}
+  tbody tr.on:focus-visible{outline:3px solid var(--yellow);outline-offset:-3px}
+  .rkcell{font-weight:800;color:var(--green);font-variant-numeric:tabular-nums;width:34px}
+  .nm-c{font-weight:700;color:var(--ink)}
+  .code-c{font-size:11.5px;color:var(--ink-dim);font-variant-numeric:tabular-nums;font-weight:600}
+  .mbadge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800;white-space:nowrap;border:1px solid}
+  .mbadge .sw{width:8px;height:8px;border-radius:50%}
+  .mb-gold{background:rgba(217,164,0,.15);border-color:rgba(217,164,0,.5);color:#8a6800} .mb-gold .sw{background:var(--gold)}
+  .mb-silver{background:rgba(150,151,156,.16);border-color:rgba(150,151,156,.5);color:#62636a} .mb-silver .sw{background:var(--silver)}
+  .mb-bronze{background:rgba(143,83,32,.13);border-color:rgba(143,83,32,.5);color:#7a4a1e} .mb-bronze .sw{background:var(--bronze)}
+  .mb-merit{background:rgba(72,160,78,.15);border-color:rgba(72,160,78,.5);color:#3a8a40} .mb-merit .sw{background:var(--merit)}
+  .mb-none{background:var(--card-2);border-color:var(--line);color:var(--ink-dim)} .mb-none .sw{background:var(--none)}
+  .no-medal{color:var(--ink-dim);font-weight:700;padding-left:6px}
+  .zt{font-weight:800;color:var(--green);font-size:14.5px}
+  .empty{text-align:center;color:var(--ink-dim);padding:40px;font-size:14px;font-weight:600}
+  .foot{color:var(--ink-dim);font-size:12px;text-align:center;margin:26px auto 0;line-height:1.7;max-width:900px;font-weight:600}
+
+  /* ---- personal-results modal ---- */
+  .modal{position:fixed;inset:0;z-index:100;display:none}
+  .modal.open{display:block}
+  .modal-backdrop{position:absolute;inset:0;background:rgba(18,38,29,.45)}
+  .modal-card{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(700px,calc(100vw - 28px));
+    max-height:calc(100vh - 40px);overflow:auto;background:var(--card);border-radius:18px;box-shadow:0 24px 70px rgba(0,0,0,.38);padding:24px 26px 28px}
+  .modal-close{position:absolute;top:14px;right:16px;border:none;background:var(--card-2);width:34px;height:34px;border-radius:50%;
+    font-size:21px;color:var(--ink-soft);line-height:1;display:flex;align-items:center;justify-content:center;font-weight:700}
+  .modal-close:hover{background:#ececeb;color:var(--ink)}
+  .m-head{display:flex;align-items:center;gap:15px;padding-right:40px}
+  .m-rank{font-size:15px;font-weight:800;color:#fff;background:var(--green);border-radius:11px;padding:8px 12px;line-height:1;
+    font-variant-numeric:tabular-nums;flex:0 0 auto;text-align:center}
+  .m-rank.gold{background:var(--gold);color:#5c4c00} .m-rank.silver{background:var(--silver)} .m-rank.bronze{background:var(--bronze)}
+  .m-rank small{display:block;font-size:8.5px;font-weight:800;letter-spacing:.1em;opacity:.8;margin-top:3px}
+  .m-id{flex:1;min-width:0}
+  .m-name{font-size:21px;font-weight:800;color:var(--ink);line-height:1.1}
+  .m-meta{font-size:13px;color:var(--ink-dim);font-weight:600;display:flex;align-items:center;gap:8px;margin-top:4px;flex-wrap:wrap}
+  .m-hero{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;margin:18px 0 4px;padding:15px 18px;background:var(--card-2);border:1px solid var(--line);border-radius:13px}
+  .m-hero-score{font-size:40px;font-weight:800;color:var(--green);line-height:.85;font-variant-numeric:tabular-nums}
+  .m-hero-score small{display:block;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim);margin-top:6px}
+  .m-hero-sub{font-size:13px;color:var(--ink-soft);font-weight:600;padding-bottom:3px;line-height:1.5}
+  .m-hero-sub b{color:var(--ink);font-weight:800}
+  .m-sections{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:18px}
+  .m-sec-h{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);
+    margin-bottom:13px;padding-bottom:8px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+  .m-sec-h span{font-size:11px;font-weight:700;color:var(--ink-dim);letter-spacing:0;text-transform:none;white-space:nowrap}
+  .exam{margin-bottom:13px}
+  .exam-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:5px}
+  .exam-name{font-size:13px;font-weight:700;color:var(--ink-soft);display:inline-flex;align-items:center;gap:7px}
+  .exam-name i{width:10px;height:10px;border-radius:3px;flex:0 0 auto}
+  .lab-tag{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.03em;color:#fff;padding:2px 6px;border-radius:5px;flex:0 0 auto}
+  .exam-val{font-size:13.5px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .exam-val .mx{color:var(--ink-dim);font-weight:600;font-size:11.5px}
+  .bar{height:8px;background:var(--line);border-radius:5px;overflow:hidden}
+  .bar > span{display:block;height:100%;border-radius:5px}
+  .zchip{display:inline-block;margin-left:6px;font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:999px;
+    background:var(--card);color:var(--ink-soft);border:1px solid var(--line)}
+  .zchip.zpos{color:#2f7d3a;border-color:rgba(72,160,78,.4)} .zchip.zneg{color:#b23b2b;border-color:rgba(210,77,59,.4)}
+  .m-note{font-size:12.5px;color:var(--ink-dim);font-weight:600;padding:8px 0}
+
+  #tip{position:fixed;pointer-events:none;background:var(--ink);color:#fff;font-size:12px;padding:8px 11px;border-radius:9px;
+       box-shadow:0 6px 20px rgba(0,0,0,.25);opacity:0;transition:opacity .1s;z-index:50;max-width:240px;font-weight:600}
+  #tip b{color:#fff;font-weight:800} #tip .r{color:#d9d9da}
+
+  @media (max-width:960px){
+    .charts{grid-template-columns:1fr}
+    .podium{grid-template-columns:1fr} .head-metrics-wrap{margin-left:0;width:100%;align-items:flex-start} .head-metrics{justify-content:flex-start}
+  }
+  @media (max-width:560px){
+    input[type=search]{min-width:100%}
+    .hide-sm{display:none}
+    .m-sections{grid-template-columns:1fr;gap:8px}
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div class="head-inner">
+      <img class="logo" src="assets/logo.png" alt="">
+      <div class="head-text">
+        <p class="eyebrow" id="hEyebrow"></p>
+        <h1 id="hTitle"></h1>
+        <div class="head-sub">
+          <span id="hSubtitle"></span>
+          <span id="hsCount"></span>
+        </div>
+      </div>
+      <div class="head-metrics-wrap">
+        <div class="head-metrics-cap" id="hMetricsCap"></div>
+        <div class="head-metrics" id="headMetrics"></div>
+      </div>
+    </div>
+    <div class="garland" aria-hidden="true"></div>
+  </header>
+
+  <main>
+    <div class="sec-t">🏆 Podium <span class="k">the three highest overall scores</span></div>
+    <div class="podium" id="podium"></div>
+
+    <div class="charts">
+      <div class="cbox">
+        <h2>Score distribution &amp; medal bands</h2>
+        <div class="h-sub">Every competitor's overall score, grouped into bins and coloured by the medal most common in each bin.</div>
+        <svg id="hist" viewBox="0 0 560 300" role="img" aria-label="Histogram of overall scores"></svg>
+        <div class="legend" id="histLegend"></div>
+      </div>
+    </div>
+
+    <div class="sec-t">📋 Full ranking <span class="k">search, sort and filter all competitors — select a row for the per-exam breakdown</span></div>
+    <div class="controls">
+      <div class="field">
+        <span class="lbl" id="medalFilterLbl">Medal</span>
+        <div class="medal-filter" id="medalFilter" role="group" aria-labelledby="medalFilterLbl"></div>
+      </div>
+      <div class="field">
+        <label for="country" id="countryLabel"></label>
+        <select id="country"></select>
+      </div>
+      <div class="field">
+        <label for="q">Search name or code</label>
+        <input id="q" type="search">
+      </div>
+      <div class="count-note" id="countNote" role="status"></div>
+    </div>
+
+    <div class="tablewrap">
+      <div class="scroller">
+        <table>
+          <thead><tr id="headRow"></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <div class="empty" id="emptyMsg" style="display:none">No competitors match these filters.</div>
+    </div>
+
+    <div class="foot" id="foot"></div>
+  </main>
+
+  <div id="modal" class="modal">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-label="Personal results">
+      <button class="modal-close" data-close aria-label="Close">×</button>
+      <div id="mBody"></div>
+    </div>
+  </div>
+
+  <div id="tip" role="tooltip"></div>
+
+<script>
+const DATA = {"meta":{"total":60,"countries":17,"eyebrow":"Olimpiade Sains Nasional 2026 Biologi · Malang","title":"Results Overview","subtitle":"Individual rankings & performance","metricsLabel":"Final updated results","footer":"Olimpiade Sains Nasional Biologi 2026, Malang.","region":"Province","regionPlural":"provinces"},"exams":[{"key":"mb","label":"Biologi Molekuler dan Biokimia","group":"practical","max":100,"color":"#408DC4","tag":"LAB1"},{"key":"ap","label":"Anatomi dan Sistematika Hewan","group":"practical","max":100,"color":"#5AAB55","tag":"LAB2"},{"key":"am","label":"Fisiologi Hewan","group":"practical","max":100,"color":"#844E94","tag":"LAB3"},{"key":"pc","label":"Bioinformatika","group":"practical","max":155,"color":"#D24D3B","tag":"LAB4"},{"key":"ta","label":"Theory A","group":"theory","max":50,"color":"#E8BC05","tag":""},{"key":"tb","label":"Theory B","group":"theory","max":50,"color":"#c2960a","tag":""}],"tiers":["gold","silver","bronze"],"medalCounts":{"gold":5,"silver":10,"bronze":15,"merit":0,"none":30},"students":[{"code":"KPR-S1","name":"DERICKSON LIE","country":"Prov. Kepulauan Riau","medal":"gold","pos":1,"raw":{"mb":37.7,"ap":48,"am":73,"pc":127,"ta":24.8,"tb":34.2},"z":{"mb":1.936,"ap":-0.117,"am":1.514,"pc":1.685,"ta":1.532,"tb":3.136},"zprac":1.867,"ztheo":2.611,"overall":94.78,"leads":12.03,"pracRank":2,"theoRank":1},{"code":"JTM-S1","name":"TALITA ALYA NABILAH","country":"Prov. Jawa Timur","medal":"gold","pos":2,"raw":{"mb":35.1,"ap":79.5,"am":74,"pc":118,"ta":24,"tb":27},"z":{"mb":1.478,"ap":1.838,"am":1.577,"pc":1.131,"ta":1.254,"tb":0.581},"zprac":2.242,"ztheo":1.033,"overall":82.75,"leads":1.79,"pracRank":1,"theoRank":8},{"code":"BTN-S3","name":"JONATHAN EZEKIEL","country":"Prov. Banten","medal":"gold","pos":3,"raw":{"mb":30.5,"ap":63,"am":49,"pc":131,"ta":27.2,"tb":27.8},"z":{"mb":0.669,"ap":0.814,"am":0.009,"pc":1.931,"ta":2.368,"tb":0.865},"zprac":1.274,"ztheo":1.822,"overall":80.96,"leads":5.18,"pracRank":4,"theoRank":2},{"code":"JBR-S5","name":"WONG, BRYANT ALDEN","country":"Prov. Jawa Barat","medal":"gold","pos":4,"raw":{"mb":30,"ap":48,"am":71,"pc":118,"ta":24,"tb":29.2},"z":{"mb":0.581,"ap":-0.117,"am":1.389,"pc":1.131,"ta":1.254,"tb":1.361},"zprac":1.11,"ztheo":1.467,"overall":75.77,"leads":1.64,"pracRank":9,"theoRank":4},{"code":"JTM-S8","name":"ALI FAHRIZA AHDA YUSRONI","country":"Prov. Jawa Timur","medal":"gold","pos":5,"raw":{"mb":19.9,"ap":71,"am":62,"pc":124,"ta":25.4,"tb":28},"z":{"mb":-1.197,"ap":1.311,"am":0.824,"pc":1.5,"ta":1.741,"tb":0.936},"zprac":0.907,"ztheo":1.507,"overall":74.14,"leads":0.42,"pracRank":12,"theoRank":3},{"code":"DIY-S3","name":"ALVARIO WIRANANDA PERMANA","country":"Prov. D.I. Yogyakarta","medal":"silver","pos":6,"raw":{"mb":30.3,"ap":73.5,"am":58,"pc":106,"ta":23.8,"tb":28.2},"z":{"mb":0.633,"ap":1.466,"am":0.574,"pc":0.394,"ta":1.184,"tb":1.007},"zprac":1.141,"ztheo":1.23,"overall":73.72,"leads":1.11,"pracRank":6,"theoRank":6},{"code":"BTN-S6","name":"NABILA HAYYU AZ-ZAHRA","country":"Prov. Banten","medal":"silver","pos":7,"raw":{"mb":29.7,"ap":78,"am":53,"pc":131,"ta":21.8,"tb":27},"z":{"mb":0.528,"ap":1.745,"am":0.26,"pc":1.931,"ta":0.488,"tb":0.581},"zprac":1.661,"ztheo":0.599,"overall":72.61,"leads":1.66,"pracRank":3,"theoRank":16},{"code":"DKI-S9","name":"AIRELLRAKHA IBNU FAIQ","country":"Prov. D.K.I. Jakarta","medal":"silver","pos":8,"raw":{"mb":30.4,"ap":61,"am":72,"pc":104,"ta":23.4,"tb":27.2},"z":{"mb":0.651,"ap":0.69,"am":1.451,"pc":0.271,"ta":1.045,"tb":0.652},"zprac":1.14,"ztheo":0.954,"overall":70.94,"leads":2.19,"pracRank":7,"theoRank":10},{"code":"BTN-S4","name":"MAHENDRA SYAIFUL HAKIM","country":"Prov. Banten","medal":"silver","pos":9,"raw":{"mb":28.5,"ap":57,"am":53,"pc":125,"ta":25.4,"tb":25},"z":{"mb":0.317,"ap":0.442,"am":0.26,"pc":1.562,"ta":1.741,"tb":-0.129},"zprac":0.96,"ztheo":0.915,"overall":68.75,"leads":2.1,"pracRank":11,"theoRank":11},{"code":"DKI-S1","name":"FAIQ ISMAEL","country":"Prov. D.K.I. Jakarta","medal":"silver","pos":10,"raw":{"mb":28.6,"ap":55.5,"am":53,"pc":105,"ta":25.2,"tb":26.6},"z":{"mb":0.334,"ap":0.349,"am":0.26,"pc":0.332,"ta":1.672,"tb":0.439},"zprac":0.474,"ztheo":1.191,"overall":66.65,"leads":0.44,"pracRank":21,"theoRank":7},{"code":"BTN-S1","name":"CYNTHIA NIKITA WIBOWO","country":"Prov. Banten","medal":"silver","pos":11,"raw":{"mb":23.3,"ap":65,"am":70,"pc":112,"ta":21.8,"tb":27.6},"z":{"mb":-0.599,"ap":0.938,"am":1.326,"pc":0.762,"ta":0.488,"tb":0.794},"zprac":0.903,"ztheo":0.718,"overall":66.21,"leads":0.45,"pracRank":13,"theoRank":14},{"code":"JTM-S4","name":"SABRINA YEIRA ARISANDRA","country":"Prov. Jawa Timur","medal":"silver","pos":12,"raw":{"mb":21,"ap":61,"am":84,"pc":115,"ta":20.8,"tb":27.6},"z":{"mb":-1.004,"ap":0.69,"am":2.204,"pc":0.947,"ta":0.14,"tb":0.794},"zprac":1.056,"ztheo":0.521,"overall":65.76,"leads":0.07,"pracRank":10,"theoRank":19},{"code":"SMU-S1","name":"CINDY ROTAN","country":"Prov. Sumatera Utara","medal":"silver","pos":13,"raw":{"mb":21.9,"ap":68,"am":52,"pc":117,"ta":23.4,"tb":27.4},"z":{"mb":-0.845,"ap":1.125,"am":0.197,"pc":1.07,"ta":1.045,"tb":0.723},"zprac":0.576,"ztheo":0.994,"overall":65.69,"leads":1.03,"pracRank":19,"theoRank":9},{"code":"DKI-S5","name":"DANIEL SURYA CHANDRA","country":"Prov. D.K.I. Jakarta","medal":"silver","pos":14,"raw":{"mb":31.3,"ap":68,"am":56,"pc":116,"ta":20,"tb":26.8},"z":{"mb":0.809,"ap":1.125,"am":0.448,"pc":1.008,"ta":-0.138,"tb":0.51},"zprac":1.262,"ztheo":0.205,"overall":64.67,"leads":3.31,"pracRank":5,"theoRank":25},{"code":"SMS-S1","name":"CALVIN CHIANDIARY","country":"Prov. Sumatera Selatan","medal":"silver","pos":15,"raw":{"mb":28.3,"ap":34.5,"am":61,"pc":113,"ta":22,"tb":27.8},"z":{"mb":0.281,"ap":-0.955,"am":0.762,"pc":0.824,"ta":0.558,"tb":0.865},"zprac":0.339,"ztheo":0.797,"overall":61.36,"leads":0.69,"pracRank":23,"theoRank":12},{"code":"DKI-S4","name":"KENNETH NICANDER WIJAYA","country":"Prov. D.K.I. Jakarta","medal":"bronze","pos":16,"raw":{"mb":23.3,"ap":56,"am":49,"pc":120,"ta":22.8,"tb":26.4},"z":{"mb":-0.599,"ap":0.38,"am":0.009,"pc":1.254,"ta":0.836,"tb":0.368},"zprac":0.389,"ztheo":0.678,"overall":60.67,"leads":0.05,"pracRank":22,"theoRank":15},{"code":"JTM-S5","name":"CESAR HAFIDZ AUSAFURRIZAL","country":"Prov. Jawa Timur","medal":"bronze","pos":17,"raw":{"mb":31,"ap":57,"am":59.5,"pc":105,"ta":22,"tb":25},"z":{"mb":0.757,"ap":0.442,"am":0.668,"pc":0.332,"ta":0.558,"tb":-0.129},"zprac":0.818,"ztheo":0.245,"overall":60.62,"leads":0.78,"pracRank":17,"theoRank":24},{"code":"JTG-S2","name":"AURELLYALLODIA FAIZA KUSUMA","country":"Prov. Jawa Tengah","medal":"bronze","pos":18,"raw":{"mb":21.5,"ap":52,"am":55,"pc":116,"ta":22.8,"tb":26.8},"z":{"mb":-0.916,"ap":0.131,"am":0.386,"pc":1.008,"ta":0.836,"tb":0.51},"zprac":0.227,"ztheo":0.757,"overall":59.84,"leads":0.49,"pracRank":24,"theoRank":13},{"code":"BTN-S5","name":"RATU UTAMI DEWI","country":"Prov. Banten","medal":"bronze","pos":19,"raw":{"mb":23.8,"ap":61,"am":67,"pc":117,"ta":19.6,"tb":26.4},"z":{"mb":-0.511,"ap":0.69,"am":1.138,"pc":1.07,"ta":-0.277,"tb":0.368},"zprac":0.888,"ztheo":0.047,"overall":59.36,"leads":1.96,"pracRank":16,"theoRank":27},{"code":"JTG-S5","name":"MUHAMMAD HANIF HARYOSO","country":"Prov. Jawa Tengah","medal":"bronze","pos":20,"raw":{"mb":34.8,"ap":50,"am":69,"pc":86,"ta":19,"tb":27},"z":{"mb":1.425,"ap":0.007,"am":1.263,"pc":-0.836,"ta":-0.486,"tb":0.581},"zprac":0.692,"ztheo":0.047,"overall":57.39,"leads":0.28,"pracRank":18,"theoRank":27},{"code":"JTM-S6","name":"GUNADI PUTRA BUNTORO","country":"Prov. Jawa Timur","medal":"bronze","pos":21,"raw":{"mb":33.1,"ap":59.5,"am":56,"pc":114,"ta":20.4,"tb":23.2},"z":{"mb":1.126,"ap":0.597,"am":0.448,"pc":0.885,"ta":0.001,"tb":-0.768},"zprac":1.137,"ztheo":-0.426,"overall":57.12,"leads":0.05,"pracRank":8,"theoRank":43},{"code":"DKI-S7","name":"JOYCELIN JANANI","country":"Prov. D.K.I. Jakarta","medal":"bronze","pos":22,"raw":{"mb":25.3,"ap":80,"am":48,"pc":96,"ta":17.8,"tb":29},"z":{"mb":-0.247,"ap":1.869,"am":-0.053,"pc":-0.221,"ta":-0.904,"tb":1.291},"zprac":0.502,"ztheo":0.205,"overall":57.07,"leads":0.65,"pracRank":20,"theoRank":25},{"code":"LAM-S3","name":"AHMAD FAIZ AKBAR","country":"Prov. Lampung","medal":"bronze","pos":23,"raw":{"mb":22.6,"ap":58.5,"am":20,"pc":96,"ta":23.6,"tb":29.6},"z":{"mb":-0.722,"ap":0.535,"am":-1.809,"pc":-0.221,"ta":1.115,"tb":1.503},"zprac":-0.825,"ztheo":1.467,"overall":56.42,"leads":0.2,"pracRank":49,"theoRank":4},{"code":"DKI-S2","name":"KHALILA AISHA RADHIYA","country":"Prov. D.K.I. Jakarta","medal":"bronze","pos":24,"raw":{"mb":41.5,"ap":64,"am":37,"pc":94,"ta":20.4,"tb":24},"z":{"mb":2.605,"ap":0.876,"am":-0.743,"pc":-0.344,"ta":0.001,"tb":-0.484},"zprac":0.891,"ztheo":-0.268,"overall":56.23,"leads":0.38,"pracRank":15,"theoRank":38},{"code":"KTM-S3","name":"MUHAMMAD ALVARO LAZUARDI","country":"Prov. Kalimantan Timur","medal":"bronze","pos":25,"raw":{"mb":32,"ap":55,"am":54,"pc":113,"ta":18.8,"tb":25.4},"z":{"mb":0.933,"ap":0.318,"am":0.323,"pc":0.824,"ta":-0.556,"tb":0.013},"zprac":0.892,"ztheo":-0.308,"overall":55.84,"leads":2.42,"pracRank":14,"theoRank":41},{"code":"JBR-S3","name":"FAIZAH ADRIANSYAH","country":"Prov. Jawa Barat","medal":"bronze","pos":26,"raw":{"mb":25.9,"ap":72,"am":38,"pc":88,"ta":21.8,"tb":26},"z":{"mb":-0.141,"ap":1.373,"am":-0.68,"pc":-0.713,"ta":0.488,"tb":0.226},"zprac":-0.06,"ztheo":0.402,"overall":53.42,"leads":1.3,"pracRank":31,"theoRank":21},{"code":"JTM-S2","name":"ATILLA AFYNANDA EZAR ROMDLONI","country":"Prov. Jawa Timur","medal":"bronze","pos":27,"raw":{"mb":29,"ap":46,"am":32,"pc":111,"ta":22.2,"tb":25},"z":{"mb":0.405,"ap":-0.241,"am":-1.056,"pc":0.701,"ta":0.628,"tb":-0.129},"zprac":-0.071,"ztheo":0.284,"overall":52.13,"leads":0.2,"pracRank":32,"theoRank":22},{"code":"DKI-S8","name":"ELMIR ASRAF JAFAR","country":"Prov. D.K.I. Jakarta","medal":"bronze","pos":28,"raw":{"mb":26.2,"ap":63,"am":36,"pc":90,"ta":20.2,"tb":27.8},"z":{"mb":-0.088,"ap":0.814,"am":-0.806,"pc":-0.59,"ta":-0.068,"tb":0.865},"zprac":-0.249,"ztheo":0.442,"overall":51.92,"leads":0.51,"pracRank":35,"theoRank":20},{"code":"SUT-S1","name":"VICTOR DARRELL ANGGRIANTO","country":"Prov. Sulawesi Tengah","medal":"bronze","pos":29,"raw":{"mb":18.4,"ap":33.5,"am":73,"pc":97,"ta":22.2,"tb":26.4},"z":{"mb":-1.461,"ap":-1.017,"am":1.514,"pc":-0.16,"ta":0.628,"tb":0.368},"zprac":-0.418,"ztheo":0.56,"overall":51.42,"leads":3.88,"pracRank":41,"theoRank":17},{"code":"RIA-S1","name":"TANAYA ENDAH LAKSMIWATI","country":"Prov. Riau","medal":"bronze","pos":30,"raw":{"mb":20.2,"ap":50.5,"am":70,"pc":97,"ta":17.6,"tb":26.8},"z":{"mb":-1.144,"ap":0.038,"am":1.326,"pc":-0.16,"ta":-0.973,"tb":0.51},"zprac":0.022,"ztheo":-0.268,"overall":47.54,"leads":0.07,"pracRank":29,"theoRank":38},{"code":"DKI-S3","name":"NATASHA ELIORA WIJAYA","country":"Prov. D.K.I. Jakarta","medal":"none","pos":31,"raw":{"mb":25.7,"ap":63,"am":49,"pc":88,"ta":18,"tb":26.6},"z":{"mb":-0.176,"ap":0.814,"am":0.009,"pc":-0.713,"ta":-0.834,"tb":0.439},"zprac":-0.025,"ztheo":-0.229,"overall":47.47,"leads":0.17,"pracRank":30,"theoRank":35},{"code":"JTM-S9","name":"M. FADHIL ZAIDAN ZAIN","country":"Prov. Jawa Timur","medal":"none","pos":32,"raw":{"mb":27.9,"ap":48.5,"am":49.5,"pc":83,"ta":18.8,"tb":27.2},"z":{"mb":0.211,"ap":-0.086,"am":0.041,"pc":-1.021,"ta":-0.556,"tb":0.652},"zprac":-0.318,"ztheo":0.047,"overall":47.29,"leads":0.03,"pracRank":37,"theoRank":27},{"code":"SUS-S1","name":"IDLAL TSAQIB TENRIAWAN","country":"Prov. Sulawesi Selatan","medal":"none","pos":33,"raw":{"mb":34.2,"ap":47,"am":53,"pc":80,"ta":19,"tb":25},"z":{"mb":1.32,"ap":-0.179,"am":0.26,"pc":-1.205,"ta":-0.486,"tb":-0.129},"zprac":0.073,"ztheo":-0.347,"overall":47.26,"leads":0.15,"pracRank":27,"theoRank":42},{"code":"JTM-S7","name":"RIZAL MAHENDRA BAGUS SEROJA","country":"Prov. Jawa Timur","medal":"none","pos":34,"raw":{"mb":37.6,"ap":52,"am":26,"pc":99,"ta":20.8,"tb":22.4},"z":{"mb":1.918,"ap":0.131,"am":-1.433,"pc":-0.037,"ta":0.14,"tb":-1.052},"zprac":0.216,"ztheo":-0.505,"overall":47.11,"leads":0.47,"pracRank":25,"theoRank":45},{"code":"BTN-S7","name":"DENNIS VIJJANANDA PUTRA","country":"Prov. Banten","medal":"none","pos":35,"raw":{"mb":24.4,"ap":36,"am":43,"pc":87,"ta":21,"tb":27.6},"z":{"mb":-0.405,"ap":-0.862,"am":-0.367,"pc":-0.775,"ta":0.21,"tb":0.794},"zprac":-0.896,"ztheo":0.56,"overall":46.64,"leads":1.09,"pracRank":52,"theoRank":17},{"code":"SMU-S2","name":"EVAN GABRIEL GINTING","country":"Prov. Sumatera Utara","medal":"none","pos":36,"raw":{"mb":21.3,"ap":31,"am":60,"pc":115,"ta":19.8,"tb":24.6},"z":{"mb":-0.951,"ap":-1.172,"am":0.699,"pc":0.947,"ta":-0.208,"tb":-0.271},"zprac":-0.177,"ztheo":-0.268,"overall":45.54,"leads":0.04,"pracRank":34,"theoRank":38},{"code":"JTG-S1","name":"HASNA ROSYIDA RAMADHINA","country":"Prov. Jawa Tengah","medal":"none","pos":37,"raw":{"mb":20.3,"ap":44,"am":48,"pc":103,"ta":20.2,"tb":25.8},"z":{"mb":-1.127,"ap":-0.365,"am":-0.053,"pc":0.209,"ta":-0.068,"tb":0.155},"zprac":-0.497,"ztheo":0.047,"overall":45.5,"leads":0.54,"pracRank":42,"theoRank":27},{"code":"JBR-S9","name":"SALMA FRANCES FATIMA","country":"Prov. Jawa Barat","medal":"none","pos":38,"raw":{"mb":31.1,"ap":31,"am":44,"pc":99,"ta":19.4,"tb":25.2},"z":{"mb":0.774,"ap":-1.172,"am":-0.304,"pc":-0.037,"ta":-0.347,"tb":-0.058},"zprac":-0.275,"ztheo":-0.229,"overall":44.96,"leads":0.43,"pracRank":36,"theoRank":35},{"code":"DIY-S1","name":"IHSAN YUAN KUSUMA","country":"Prov. D.I. Yogyakarta","medal":"none","pos":39,"raw":{"mb":27.7,"ap":49,"am":42,"pc":89,"ta":20.4,"tb":24.4},"z":{"mb":0.176,"ap":-0.055,"am":-0.429,"pc":-0.652,"ta":0.001,"tb":-0.342},"zprac":-0.357,"ztheo":-0.189,"overall":44.53,"leads":0.3,"pracRank":39,"theoRank":34},{"code":"JBR-S4","name":"TENGKU MUHAMMAD ARFA ALAUNA","country":"Prov. Jawa Barat","medal":"none","pos":40,"raw":{"mb":21.6,"ap":50,"am":31,"pc":105,"ta":22.8,"tb":23.2},"z":{"mb":-0.898,"ap":0.007,"am":-1.119,"pc":0.332,"ta":0.836,"tb":-0.768},"zprac":-0.624,"ztheo":0.047,"overall":44.23,"leads":2.47,"pracRank":45,"theoRank":27},{"code":"LAM-S2","name":"AHMAD ALI FURQON","country":"Prov. Lampung","medal":"none","pos":41,"raw":{"mb":29.7,"ap":47,"am":37,"pc":80,"ta":19.8,"tb":24.8},"z":{"mb":0.528,"ap":-0.179,"am":-0.743,"pc":-1.205,"ta":-0.208,"tb":-0.2},"zprac":-0.595,"ztheo":-0.229,"overall":41.76,"leads":0.67,"pracRank":44,"theoRank":35},{"code":"JTG-S4","name":"HISYAM EKO WAHYUDI","country":"Prov. Jawa Tengah","medal":"none","pos":42,"raw":{"mb":25.3,"ap":49,"am":55.5,"pc":105,"ta":16.6,"tb":23.8},"z":{"mb":-0.247,"ap":-0.055,"am":0.417,"pc":0.332,"ta":-1.321,"tb":-0.555},"zprac":0.166,"ztheo":-1.057,"overall":41.1,"leads":0.16,"pracRank":26,"theoRank":52},{"code":"SUU-S1","name":"MIRANDA CLARINE SERENITY LIWOSO","country":"Prov. Sulawesi Utara","medal":"none","pos":43,"raw":{"mb":20.3,"ap":40,"am":35,"pc":90,"ta":21.4,"tb":25.8},"z":{"mb":-1.127,"ap":-0.613,"am":-0.868,"pc":-0.59,"ta":0.349,"tb":0.155},"zprac":-1.19,"ztheo":0.284,"overall":40.94,"leads":0,"pracRank":55,"theoRank":22},{"code":"JBR-S6","name":"MUHAMMAD EFRYANSYAH","country":"Prov. Jawa Barat","medal":"none","pos":44,"raw":{"mb":25.7,"ap":63,"am":24,"pc":97,"ta":18.2,"tb":25},"z":{"mb":-0.176,"ap":0.814,"am":-1.558,"pc":-0.16,"ta":-0.764,"tb":-0.129},"zprac":-0.402,"ztheo":-0.505,"overall":40.93,"leads":1.34,"pracRank":40,"theoRank":45},{"code":"SUT-S2","name":"AZALIA ALTHAFUNNISA","country":"Prov. Sulawesi Tengah","medal":"none","pos":45,"raw":{"mb":27.6,"ap":38,"am":45,"pc":74,"ta":21.6,"tb":23.4},"z":{"mb":0.158,"ap":-0.738,"am":-0.241,"pc":-1.574,"ta":0.419,"tb":-0.697},"zprac":-0.891,"ztheo":-0.15,"overall":39.59,"leads":0.97,"pracRank":51,"theoRank":33},{"code":"SUB-S1","name":"ADITYA ALFISRI","country":"Prov. Sumatera Barat","medal":"none","pos":46,"raw":{"mb":20.6,"ap":39,"am":60,"pc":89,"ta":16.6,"tb":26.6},"z":{"mb":-1.074,"ap":-0.676,"am":0.699,"pc":-0.652,"ta":-1.321,"tb":0.439},"zprac":-0.633,"ztheo":-0.505,"overall":38.62,"leads":1.08,"pracRank":46,"theoRank":45},{"code":"SMS-S2","name":"BERTRAND TRYGVE AMARTA","country":"Prov. Sumatera Selatan","medal":"none","pos":47,"raw":{"mb":30.4,"ap":29,"am":57,"pc":78,"ta":20.4,"tb":21.8},"z":{"mb":0.651,"ap":-1.296,"am":0.511,"pc":-1.328,"ta":0.001,"tb":-1.264},"zprac":-0.544,"ztheo":-0.702,"overall":37.54,"leads":0.4,"pracRank":43,"theoRank":49},{"code":"KTM-S2","name":"AZZAHRA NABILLA SOFIAN","country":"Prov. Kalimantan Timur","medal":"none","pos":48,"raw":{"mb":17.7,"ap":70,"am":36,"pc":84,"ta":20.4,"tb":22.8},"z":{"mb":-1.584,"ap":1.249,"am":-0.806,"pc":-0.959,"ta":0.001,"tb":-0.91},"zprac":-0.782,"ztheo":-0.505,"overall":37.14,"leads":0.17,"pracRank":48,"theoRank":45},{"code":"DIY-S2","name":"HILYA ARIFAH AHLA","country":"Prov. D.I. Yogyakarta","medal":"none","pos":49,"raw":{"mb":28.6,"ap":33,"am":66,"pc":95,"ta":18.6,"tb":20.4},"z":{"mb":0.334,"ap":-1.048,"am":1.075,"pc":-0.283,"ta":-0.625,"tb":-1.761},"zprac":0.029,"ztheo":-1.333,"overall":36.96,"leads":0.15,"pracRank":28,"theoRank":55},{"code":"BTN-S2","name":"HAFIZHAH DHIZA ADILLAH","country":"Prov. Banten","medal":"none","pos":50,"raw":{"mb":24,"ap":21,"am":51,"pc":97,"ta":17.8,"tb":25.6},"z":{"mb":-0.476,"ap":-1.793,"am":0.135,"pc":-0.16,"ta":-0.904,"tb":0.084},"zprac":-0.853,"ztheo":-0.465,"overall":36.81,"leads":1.07,"pracRank":50,"theoRank":44},{"code":"JTG-S3","name":"RIZKY ALFAREZA","country":"Prov. Jawa Tengah","medal":"none","pos":51,"raw":{"mb":29.7,"ap":61,"am":36.5,"pc":78,"ta":16.8,"tb":23.4},"z":{"mb":0.528,"ap":0.69,"am":-0.774,"pc":-1.328,"ta":-1.252,"tb":-0.697},"zprac":-0.329,"ztheo":-1.096,"overall":35.74,"leads":1.23,"pracRank":38,"theoRank":53},{"code":"KTM-S1","name":"MUHAMMAD ALFIANSYAH","country":"Prov. Kalimantan Timur","medal":"none","pos":52,"raw":{"mb":27.1,"ap":17,"am":37,"pc":74,"ta":19,"tb":27},"z":{"mb":0.07,"ap":-2.041,"am":-0.743,"pc":-1.574,"ta":-0.486,"tb":0.581},"zprac":-1.596,"ztheo":0.047,"overall":34.52,"leads":3.22,"pracRank":57,"theoRank":27},{"code":"JTM-S3","name":"DEWSON SANTOSO","country":"Prov. Jawa Timur","medal":"none","pos":53,"raw":{"mb":31.7,"ap":37.5,"am":56,"pc":86,"ta":17,"tb":19.8},"z":{"mb":0.88,"ap":-0.769,"am":0.448,"pc":-0.836,"ta":-1.182,"tb":-1.974},"zprac":-0.103,"ztheo":-1.767,"overall":31.3,"leads":2.5,"pracRank":33,"theoRank":57},{"code":"DKI-S6","name":"MUHAMMAD GIOVANY SUBHAN","country":"Prov. D.K.I. Jakarta","medal":"none","pos":54,"raw":{"mb":21.2,"ap":48,"am":39,"pc":86,"ta":18.2,"tb":21.6},"z":{"mb":-0.968,"ap":-0.117,"am":-0.618,"pc":-0.836,"ta":-0.764,"tb":-1.335},"zprac":-0.945,"ztheo":-1.175,"overall":28.8,"leads":2.44,"pracRank":53,"theoRank":54},{"code":"JBR-S7","name":"MUHAMMAD ALIF GHAZIAN EL-HAQ","country":"Prov. Jawa Barat","medal":"none","pos":55,"raw":{"mb":28.9,"ap":19,"am":28,"pc":80,"ta":19.2,"tb":22.2},"z":{"mb":0.387,"ap":-1.917,"am":-1.307,"pc":-1.205,"ta":-0.416,"tb":-1.123},"zprac":-1.504,"ztheo":-0.86,"overall":26.36,"leads":8.27,"pracRank":56,"theoRank":50},{"code":"JBR-S2","name":"NABIL AUFA FADHILAH HARDI","country":"Prov. Jawa Barat","medal":"none","pos":56,"raw":{"mb":30.1,"ap":33,"am":22,"pc":91,"ta":14.4,"tb":20.2},"z":{"mb":0.598,"ap":-1.048,"am":-1.683,"pc":-0.529,"ta":-2.087,"tb":-1.832},"zprac":-0.991,"ztheo":-2.201,"overall":18.09,"leads":1.59,"pracRank":54,"theoRank":58},{"code":"BAL-S1","name":"KOMANG DHYANA PARAMITHA TRISNA","country":"Prov. Bali","medal":"none","pos":57,"raw":{"mb":28.8,"ap":24,"am":26,"pc":110,"ta":12.8,"tb":19.8},"z":{"mb":0.369,"ap":-1.607,"am":-1.433,"pc":0.639,"ta":-2.644,"tb":-1.974},"zprac":-0.755,"ztheo":-2.595,"overall":16.49,"leads":0.56,"pracRank":47,"theoRank":60},{"code":"JBR-S8","name":"AHMAD FATHI AZZAM","country":"Prov. Jawa Barat","medal":"none","pos":58,"raw":{"mb":14.3,"ap":16,"am":26,"pc":83,"ta":16.6,"tb":24.6},"z":{"mb":-2.183,"ap":-2.103,"am":-1.433,"pc":-1.021,"ta":-1.321,"tb":-0.271},"zprac":-2.508,"ztheo":-0.899,"overall":15.93,"leads":1.62,"pracRank":60,"theoRank":51},{"code":"JBR-S1","name":"AFZAL MUHAFIZ","country":"Prov. Jawa Barat","medal":"none","pos":59,"raw":{"mb":13.6,"ap":33,"am":12,"pc":94,"ta":18.6,"tb":20.4},"z":{"mb":-2.306,"ap":-1.048,"am":-2.31,"pc":-0.344,"ta":-0.625,"tb":-1.761},"zprac":-2.236,"ztheo":-1.333,"overall":14.31,"leads":9.53,"pracRank":59,"theoRank":55},{"code":"LAM-S1","name":"ASILATUN NABILAH","country":"Prov. Lampung","medal":"none","pos":60,"raw":{"mb":19.9,"ap":35,"am":32,"pc":55,"ta":15.4,"tb":18.6},"z":{"mb":-1.197,"ap":-0.924,"am":-1.056,"pc":-2.742,"ta":-1.739,"tb":-2.4},"zprac":-2.203,"ztheo":-2.319,"overall":4.78,"leads":null,"pracRank":58,"theoRank":59}]};
+
+const MEDAL = {
+  gold:  {c:'#d9a400', label:'Gold',    ico:'🥇'},
+  silver:{c:'#96979c', label:'Silver',  ico:'🥈'},
+  bronze:{c:'#8f5320', label:'Bronze',  ico:'🥉'},
+  merit: {c:'#48a04e', label:'Merit',   ico:'🎖️'},
+  none:  {c:'#cbcdcc', label:'No medal',ico:''},
+};
+const S = DATA.students;
+const EX = DATA.exams;
+const PRAC = EX.filter(e=>e.group==='practical');
+const THEO = EX.filter(e=>e.group==='theory');
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmtZ = z => z==null ? '—' : (z>=0?'+':'') + z.toFixed(2);
+const fmtN = (v,d=2) => v==null ? '—' : v.toFixed(d);
+
+// ---------- tooltip ----------
+const tip = $('#tip');
+function showTip(html,e){ tip.innerHTML=html; tip.style.opacity=1; moveTip(e); }
+function moveTip(e){
+  let x=e.clientX+14, y=e.clientY+14;
+  if(x+250>window.innerWidth) x=e.clientX-250;
+  if(y+120>window.innerHeight) y=e.clientY-100;
+  tip.style.left=x+'px'; tip.style.top=y+'px';
+}
+function hideTip(){ tip.style.opacity=0; }
+document.addEventListener('mousemove',e=>{ if(tip.style.opacity==='1') moveTip(e); });
+
+// ---------- header ----------
+const M = DATA.meta, mc = DATA.medalCounts;
+document.title = document.title || M.title;
+$('#hEyebrow').textContent = M.eyebrow;
+$('#hTitle').textContent = M.title;
+$('#hSubtitle').textContent = M.subtitle;
+$('#hsCount').textContent = `${M.total} competitors · ${M.countries} ${M.regionPlural}`;
+$('#countryLabel').textContent = M.region;
+$('#hMetricsCap').textContent = M.metricsLabel;
+$('#headMetrics').innerHTML = DATA.tiers.map(k =>
+  `<div class="hm ${k}"><div class="v">${mc[k]}</div><div class="k">${MEDAL[k].label}</div></div>`
+).join('') + (DATA.tiers.length
+  ? `<div class="hm"><div class="v">${DATA.tiers.filter(k=>k!=='merit').reduce((a,k)=>a+mc[k],0)}</div><div class="k">Medals</div></div>`
+  : '');
+$('#foot').innerHTML = `${esc(M.footer)} ${M.total} competitors from ${M.countries} ${esc(M.regionPlural)}.<br>
+  Overall score is a normalised composite of ${PRAC.length} practical exam${PRAC.length===1?'':'s'} and ${THEO.length} theory paper${THEO.length===1?'':'s'};
+  z-scores show standing relative to the field mean (0 = average).`;
+
+// ---------- podium ----------
+const top3 = S.filter(s=>s.pos!=null && s.pos<=3).sort((a,b)=>a.pos-b.pos);
+$('#podium').innerHTML = [top3[1],top3[0],top3[2]].filter(Boolean).map(s=>{
+  const m = MEDAL[s.medal];
+  return `<button class="pod p${s.pos}" data-code="${esc(s.code)}">
+    <div class="rk">${s.pos}</div>
+    <div class="medalico" aria-hidden="true">${m.ico}</div>
+    <div class="nm">${esc(s.name)}</div>
+    <div class="ct"><span class="flag-code">${esc(s.code.split('-')[0])}</span>${esc(s.country)}</div>
+    <div class="sc">${fmtN(s.overall)}</div>
+    <div class="scl">Overall score</div>
+  </button>`;
+}).join('');
+
+// ---------- histogram ----------
+(function(){
+  const W=560,H=300,mL=40,mR=14,mT=18,mB=42,bw=5;
+  const scored = S.filter(s=>s.overall!=null);
+  if(!scored.length){ $('#hist').closest('.cbox').style.display='none'; return; }
+  const vals = scored.map(s=>s.overall);
+  const min = Math.floor(Math.min(...vals)/bw)*bw;
+  const max = Math.max(Math.ceil(Math.max(...vals)/bw)*bw, min+bw);
+  const bins=[];
+  for(let x=min;x<max;x+=bw){
+    // last bin is closed so the top scorer isn't dropped
+    const last = x+bw>=max;
+    bins.push({x0:x, x1:x+bw, items:scored.filter(s=>s.overall>=x && (last ? s.overall<=x+bw : s.overall<x+bw))});
+  }
+  const maxCount = Math.max(...bins.map(b=>b.items.length));
+  const xs = v => mL+(v-min)/(max-min)*(W-mL-mR);
+  const ys = c => H-mB-(c/maxCount)*(H-mT-mB);
+  const majMedal = items => {
+    const c={}; items.forEach(s=>c[s.medal]=(c[s.medal]||0)+1);
+    return Object.keys(c).sort((a,b)=>c[b]-c[a])[0];
+  };
+  let svg='';
+  for(let c=0;c<=maxCount;c+=Math.max(1,Math.ceil(maxCount/5))){
+    svg+=`<line x1="${mL}" y1="${ys(c)}" x2="${W-mR}" y2="${ys(c)}" stroke="#E2E2E1" stroke-width="1"/>`;
+    svg+=`<text x="${mL-6}" y="${ys(c)+3}" font-size="10" fill="#8E8F91" text-anchor="end">${c}</text>`;
+  }
+  bins.forEach(b=>{
+    if(!b.items.length) return;
+    const band=majMedal(b.items);
+    const x=xs(b.x0)+1, w=Math.max(1,xs(b.x1)-xs(b.x0)-2), y=ys(b.items.length), h=(H-mB)-y;
+    svg+=`<rect class="hbar" x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="${MEDAL[band].c}"
+      data-r="${b.x0}–${b.x1}" data-c="${b.items.length}" data-band="${band}"/>`;
+  });
+  svg+=`<line x1="${mL}" y1="${H-mB}" x2="${W-mR}" y2="${H-mB}" stroke="#c9c9c8" stroke-width="1"/>`;
+  const step = Math.max(bw, Math.ceil((max-min)/10/bw)*bw);
+  for(let x=min;x<=max;x+=step){
+    svg+=`<text x="${xs(x)}" y="${H-mB+16}" font-size="10" fill="#8E8F91" text-anchor="middle">${x}</text>`;
+  }
+  svg+=`<text x="${(mL+W-mR)/2}" y="${H-6}" font-size="11" fill="#565759" text-anchor="middle" font-weight="700">Overall score</text>`;
+  svg+=`<text transform="translate(12,${(mT+H-mB)/2}) rotate(-90)" font-size="11" fill="#565759" text-anchor="middle" font-weight="700">Competitors</text>`;
+  $('#hist').innerHTML=svg;
+  $('#hist').querySelectorAll('.hbar').forEach(el=>{
+    el.addEventListener('mousemove',e=>showTip(
+      `<b>Score ${el.dataset.r}</b><br><span class="r">${el.dataset.c} competitor${el.dataset.c==1?'':'s'} · mostly ${MEDAL[el.dataset.band].label}</span>`,e));
+    el.addEventListener('mouseleave',hideTip);
+  });
+  $('#histLegend').innerHTML = DATA.tiers.concat('none').map(k=>
+    `<span class="chip"><i class="sw" style="background:${MEDAL[k].c}"></i>${MEDAL[k].label}</span>`).join('');
+})();
+
+// ---------- table ----------
+const byCode = Object.fromEntries(S.map(s=>[s.code,s]));
+let filt = {medal:'all', country:'', q:''};
+let sortKey='pos', sortDir=1;
+const cols = [
+  {k:'pos',     t:'#',          num:true},
+  {k:'name',    t:'Competitor'},
+  {k:'country', t:esc(M.region)},
+  {k:'medal',   t:'Medal'},
+  {k:'zprac',   t:'Prac z',     num:true, sm:true},
+  {k:'ztheo',   t:'Theo z',     num:true, sm:true},
+  {k:'overall', t:'Overall',    num:true},
+].filter(c => (c.k!=='zprac'||PRAC.length) && (c.k!=='ztheo'||THEO.length));
+
+$('#headRow').innerHTML = cols.map(c=>
+  `<th class="${c.num?'num':''} ${c.sm?'hide-sm':''}" aria-sort="none" data-k="${c.k}">
+     <button type="button">${c.t}<span class="ar" data-ar="${c.k}"></span></button></th>`).join('');
+$('#headRow').querySelectorAll('th').forEach(th=>{
+  th.querySelector('button').addEventListener('click',()=>{
+    const k=th.dataset.k;
+    if(sortKey===k) sortDir*=-1;
+    else { sortKey=k; sortDir = (k==='name'||k==='country'||k==='pos') ? 1 : -1; }
+    render();
+  });
+});
+
+const mfDefs = [{k:'all',label:'All'}].concat(DATA.tiers.map(k=>({k,label:MEDAL[k].label})));
+$('#medalFilter').innerHTML = mfDefs.map(d=>
+  `<button type="button" class="mf" aria-pressed="${d.k==='all'}" data-m="${d.k}">${
+    d.k!=='all' ? `<i class="sw" style="background:${MEDAL[d.k].c}"></i>` : ''}${d.label}</button>`).join('');
+$('#medalFilter').querySelectorAll('.mf').forEach(b=>{
+  b.addEventListener('click',()=>{
+    filt.medal=b.dataset.m;
+    $('#medalFilter').querySelectorAll('.mf').forEach(x=>x.setAttribute('aria-pressed', String(x===b)));
+    render();
+  });
+});
+
+const clist=[...new Set(S.map(s=>s.country))].sort((a,b)=>a.localeCompare(b));
+$('#country').innerHTML = `<option value="">All ${esc(M.regionPlural)}</option>`
+  + clist.map(c=>`<option>${esc(c)}</option>`).join('');
+$('#country').addEventListener('change',e=>{filt.country=e.target.value;render();});
+
+// Placeholder is worked out from whoever is actually top of the table, so the example always
+// matches the data on screen. First word of the name, because names run long and some carry a
+// trailing comma ("WONG, BRYANT ALDEN" -> "WONG").
+const top1 = S.find(s=>s.pos===1) || S[0];
+$('#q').placeholder = top1
+  ? `e.g. ${top1.name.split(/[\s,]+/).filter(Boolean)[0]}, ${top1.code}…`
+  : 'search by name or code…';
+$('#q').addEventListener('input',e=>{filt.q=e.target.value.toLowerCase().trim();render();});
+
+function render(){
+  const rows = S.filter(s=>{
+    if(filt.medal!=='all' && s.medal!==filt.medal) return false;
+    if(filt.country && s.country!==filt.country) return false;
+    if(filt.q && !(s.name.toLowerCase().includes(filt.q) || s.code.toLowerCase().includes(filt.q))) return false;
+    return true;
+  });
+  const order=['gold','silver','bronze','merit','none'];
+  rows.sort((a,b)=>{
+    let x,y;
+    if(sortKey==='medal'){ x=order.indexOf(a.medal); y=order.indexOf(b.medal); }
+    else { x=a[sortKey]; y=b[sortKey]; }
+    // A competitor with no score isn't last, they're unknown — sink them either way round.
+    if(x==null || y==null) return x==null && y==null ? 0 : (x==null ? 1 : -1);
+    if(typeof x==='string') return sortDir*x.localeCompare(y);
+    return sortDir*(x-y);
+  });
+  $('#countNote').textContent=`Showing ${rows.length} of ${M.total}`;
+  $('#emptyMsg').style.display=rows.length?'none':'block';
+  $('#tbody').innerHTML = rows.map(s=>{
+    const m=MEDAL[s.medal];
+    const cells=[
+      `<td class="rkcell">${s.pos ?? '—'}</td>`,
+      `<td><div class="nm-c">${esc(s.name)}</div><div class="code-c">${esc(s.code)}</div></td>`,
+      `<td><span class="flag-code">${esc(s.code.split('-')[0])}</span> <span class="hide-sm">${esc(s.country)}</span></td>`,
+      `<td>${s.medal==='none' ? '<span class="no-medal">—</span>' : `<span class="mbadge mb-${s.medal}"><i class="sw"></i>${m.label}</span>`}</td>`,
+      PRAC.length ? `<td class="num hide-sm">${fmtN(s.zprac)}</td>` : '',
+      THEO.length ? `<td class="num hide-sm">${fmtN(s.ztheo)}</td>` : '',
+      `<td class="num"><span class="zt">${fmtN(s.overall)}</span></td>`,
+    ].join('');
+    return `<tr class="on" tabindex="0" data-code="${esc(s.code)}">${cells}</tr>`;
+  }).join('');
+  document.querySelectorAll('[data-ar]').forEach(a=>a.textContent='');
+  $('#headRow').querySelectorAll('th').forEach(th=>
+    th.setAttribute('aria-sort', th.dataset.k===sortKey ? (sortDir>0?'ascending':'descending') : 'none'));
+  const ar=document.querySelector(`[data-ar="${sortKey}"]`);
+  if(ar) ar.textContent = sortDir>0 ? '▲' : '▼';
+}
+
+// One delegated handler covers podium buttons and every table row, now and after re-render.
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-code]');
+  if(el) openModal(byCode[el.dataset.code]);
+});
+$('#tbody').addEventListener('keydown',e=>{
+  if(e.key!=='Enter' && e.key!==' ') return;
+  const tr=e.target.closest('tr[data-code]');
+  if(!tr) return;
+  e.preventDefault();
+  openModal(byCode[tr.dataset.code]);
+});
+
+// ---------- modal ----------
+function examRow(e, raw, z){
+  const pct = raw==null ? 0 : Math.max(0, Math.min(100, raw/e.max*100));
+  const zc = z===undefined ? '' : `<span class="zchip ${z==null?'':(z>=0?'zpos':'zneg')}">z ${fmtZ(z)}</span>`;
+  const marker = e.tag
+    ? `<span class="lab-tag" style="background:${e.color}">${esc(e.tag)}</span>`
+    : `<i style="background:${e.color}"></i>`;
+  return `<div class="exam">
+    <div class="exam-top">
+      <span class="exam-name">${marker}${esc(e.label)}</span>
+      <span class="exam-val">${raw==null?'—':raw}<span class="mx">/${e.max}</span> ${zc}</span>
+    </div>
+    <div class="bar"><span style="width:${pct}%;background:${e.color}"></span></div>
+  </div>`;
+}
+function section(title, list, groupZ, groupRank, withZ){
+  if(!list.length) return '';
+  const meta = groupZ==null ? '—' : `z-total ${fmtZ(groupZ)}${groupRank?` · rank #${groupRank}`:''}`;
+  const body = groupZ==null && list.every(e=>e.raw==null)
+    ? `<div class="m-note">No ${title.toLowerCase()} recorded.</div>`
+    : list.map(e=>examRow(e, e.raw, withZ ? e.z : undefined)).join('');
+  return `<div class="m-sec"><div class="m-sec-h">${title} <span>${meta}</span></div>${body}</div>`;
+}
+let lastFocus=null;
+function openModal(s){
+  if(!s) return;
+  lastFocus=document.activeElement;
+  const m=MEDAL[s.medal];
+  const rankCls = s.pos===1?'gold':s.pos===2?'silver':s.pos===3?'bronze':'';
+  const medalHtml = s.medal==='none'
+    ? '<span class="mbadge mb-none"><i class="sw"></i>No medal</span>'
+    : `<span class="mbadge mb-${s.medal}"><i class="sw"></i>${m.label}</span>`;
+  const leadHtml = (s.leads!=null && s.leads>0) ? ` · leads #${s.pos+1} by <b>${s.leads.toFixed(2)}</b>` : '';
+  const withRaw = list => list.map(e=>({...e, raw:s.raw[e.key], z:s.z[e.key]}));
+  const zLine = [
+    PRAC.length ? `Practical z <b>${fmtZ(s.zprac)}</b>` : '',
+    THEO.length ? `Theory z <b>${fmtZ(s.ztheo)}</b>` : '',
+  ].filter(Boolean).join(' · ');
+
+  $('#mBody').innerHTML = `
+    <div class="m-head">
+      <div class="m-rank ${rankCls}">${s.pos ?? '—'}<small>RANK</small></div>
+      <div class="m-id">
+        <div class="m-name">${esc(s.name)}</div>
+        <div class="m-meta"><span class="flag-code">${esc(s.code.split('-')[0])}</span>${esc(s.country)} · ${esc(s.code)} ${medalHtml}</div>
+      </div>
+    </div>
+    <div class="m-hero">
+      <div class="m-hero-score">${fmtN(s.overall)}<small>Overall score</small></div>
+      <div class="m-hero-sub">Rank <b>#${s.pos ?? '—'}</b> of ${M.total}${leadHtml}<br>${zLine}</div>
+    </div>
+    <div class="m-sections">
+      ${section('Practical exams', withRaw(PRAC), s.zprac, s.pracRank, true)}
+      ${section('Theory papers',   withRaw(THEO), s.ztheo, s.theoRank, false)}
+    </div>`;
+  const mod=$('#modal');
+  mod.classList.add('open');
+  document.body.style.overflow='hidden';
+  mod.querySelector('.modal-close').focus();
+}
+function closeModal(){
+  $('#modal').classList.remove('open');
+  document.body.style.overflow='';
+  lastFocus?.focus();
+}
+$('#modal').querySelectorAll('[data-close]').forEach(el=>el.addEventListener('click',closeModal));
+document.addEventListener('keydown',e=>{ if(e.key==='Escape' && $('#modal').classList.contains('open')) closeModal(); });
+
+render();
+</script>
+</body>
+</html>
